@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { FaTools, FaBell, FaInfoCircle } from "react-icons/fa";
+import {FaBolt, FaTools, FaBell, FaInfoCircle } from "react-icons/fa";
 import "./Energy.css";
 
 const BLYNK_TOKEN = "YOUR_AUTH_TOKEN"; 
@@ -47,7 +47,7 @@ const SmartEnergyMeter = () => {
     <div className="container">
       {/* Header */}
       <div className="header">
-        <img className="logo" src="/logopg.png" alt="logo"/>
+      <FaBolt className="logo" />
         <h1 className="title">SMART ENERGY METER</h1>
         <div className="icon-group">
           <FaTools className="icon" />
