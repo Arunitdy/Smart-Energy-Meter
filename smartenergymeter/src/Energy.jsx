@@ -23,16 +23,19 @@ const SmartEnergyMeter = () => {
         const currentData = await currentRes.json();
         const powerData = await powerRes.json();
 
+        console.log(voltageData, currentData, powerData);
+
         setVoltage(voltageData.V0 || 0);
         setCurrent(currentData.V1 || 0);
         setRealPower(powerData.V2 || 0);
       } catch (error) {
         console.error("Error fetching Blynk data:", error);
+        alert("Error fetching Blynk data. Please check the console for more information.");
       }
     };
 
     fetchData();
-    const interval = setInterval(fetchData, 5000); // Fetch every 5 seconds
+    const interval = setInterval(fetchData, 5000); 
     return () => clearInterval(interval);
   }, []);
 
@@ -40,7 +43,7 @@ const SmartEnergyMeter = () => {
     <div className="container">
       {/* Header */}
       <div className="header">
-        <button className="back-button">&#x2190;</button>
+        <img className="logo" src="./logopg.png" alt="logo"/>
         <h1 className="title">SMART ENERGY METER</h1>
         <div className="icon-group">
           <FaTools className="icon" />
