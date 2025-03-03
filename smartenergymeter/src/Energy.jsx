@@ -1,18 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { FaTools, FaBell, FaInfoCircle } from "react-icons/fa";
 import "./Energy.css";
 
+const BLYNK_TOKEN = "YOUR_AUTH_TOKEN"; 
+const API_URL = `https://blynk.cloud/external/api/get?token=${BLYNK_TOKEN}`;
+
 const SmartEnergyMeter = () => {
-  const voltage = 260;
-  const current = 4.02424;
-  const realPower = 1702.168;
+  const [voltage, setVoltage] = useState(0);
+  const [current, setCurrent] = useState(0);
+  const [realPower, setRealPower] = useState(0);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const voltageRes = await fetch(`${API_URL}&V0`);
+        const currentRes = await fetch(`${API_URL}&V1`);
+        const powerRes = await fetch(`${API_URL}&V2`);
+
+        const voltageData = await voltageRes.json();
+        const currentData = await currentRes.json();
+        const powerData = await powerRes.json();
+
+        setVoltage(voltageData.V0 || 0);
+        setCurrent(currentData.V1 || 0);
+        setRealPower(powerData.V2 || 0);
+      } catch (error) {
+        console.error("Error fetching Blynk data:", error);
+      }
+    };
+
+    fetchData();
+    const interval = setInterval(fetchData, 5000); // Fetch every 5 seconds
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="container">
       {/* Header */}
       <div className="header">
+        <button className="back-button">&#x2190;</button>
         <h1 className="title">SMART ENERGY METER</h1>
         <div className="icon-group">
           <FaTools className="icon" />
@@ -21,13 +49,13 @@ const SmartEnergyMeter = () => {
         </div>
       </div>
 
-      {/* Circular Progress Bars in a Row */}
+      {/* Circular Progress Bars */}
       <div className="progress-container">
         <div className="progress-wrapper">
           <CircularProgressbar
             value={voltage}
             maxValue={260}
-            text={`${voltage}`}
+            text={`${voltage}V`}
             styles={buildStyles({ pathColor: "#1e3a8a", textColor: "#1e3a8a" })}
           />
           <p className="progress-label">VOLTAGE</p>
@@ -35,7 +63,7 @@ const SmartEnergyMeter = () => {
         <div className="progress-wrapper">
           <CircularProgressbar
             value={current}
-            maxValue={255}
+            maxValue={10}
             text={`${current.toFixed(2)}A`}
             styles={buildStyles({ pathColor: "#6b7280", textColor: "#6b7280" })}
           />

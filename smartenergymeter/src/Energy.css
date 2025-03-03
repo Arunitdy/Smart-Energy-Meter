@@ -31,7 +31,14 @@ body {
   
   .icon {
     font-size: 20px;
+    border: 1px solid #333;
+    padding: 2px;
+    border-radius: 5px;
+    cursor:pointer;
     color: #333;
+  }
+  .icon:hover {
+    background-color: #a9a739;
   }
   
   .progress-container {
