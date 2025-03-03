@@ -47,7 +47,7 @@ const SmartEnergyMeter = () => {
     <div className="container">
       {/* Header */}
       <div className="header">
-        <img className="logo" src="../logopg.png" alt="logo"/>
+        <img className="logo" src="./logopg.png" alt="logo"/>
         <h1 className="title">SMART ENERGY METER</h1>
         <div className="icon-group">
           <FaTools className="icon" />
