@@ -11,6 +11,7 @@ const SmartEnergyMeter = () => {
   const [voltage, setVoltage] = useState(0);
   const [current, setCurrent] = useState(0);
   const [realPower, setRealPower] = useState(0);
+  const [energy, setEnergy] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,16 +19,19 @@ const SmartEnergyMeter = () => {
         const voltageRes = await fetch(`${API_URL}&V0`);
         const currentRes = await fetch(`${API_URL}&V1`);
         const powerRes = await fetch(`${API_URL}&V2`);
+        const energyRes = await fetch(`${API_URL}&V3`);
 
         const voltageData = await voltageRes.json();
         const currentData = await currentRes.json();
         const powerData = await powerRes.json();
+        const energyData = await energyRes.json();
 
-        console.log(voltageData, currentData, powerData);
+        console.log(voltageData, currentData, powerData, energyData);
 
         setVoltage(voltageData.V0 || 0);
         setCurrent(currentData.V1 || 0);
         setRealPower(powerData.V2 || 0);
+        setEnergy(energyData.V3 || 0);
       } catch (error) {
         console.error("Error fetching Blynk data:", error);
         alert("Error fetching Blynk data. Please check the console for more information.");
@@ -71,6 +75,15 @@ const SmartEnergyMeter = () => {
             styles={buildStyles({ pathColor: "#6b7280", textColor: "#6b7280" })}
           />
           <p className="progress-label">CURRENT</p>
+        </div>
+        <div className="progress-wrapper">
+          <CircularProgressbar
+            value={energy}
+            maxValue={1000}
+            text={`${energy}kWh`}
+            styles={buildStyles({ pathColor: "#ff9800", textColor: "#ff9800" })}
+          />
+          <p className="progress-label">ENERGY</p>
         </div>
       </div>
 
